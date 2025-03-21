@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.nmgjc.config.SensitiveWordConfig,\
+  com.nmgjc.config.SensitiveWordInterceptorConfig
