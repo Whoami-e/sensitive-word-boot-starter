@@ -1,3 +1,11 @@
+> [!NOTE]
+> 由于本人第一次封装starter，对于Spring配置方面的了解的不是很好，有啥错误的地方，请多多包涵。
+>
+
+此项目是基于[houbb](https://github.com/houbb/sensitive-word)的敏感词检测项目做的starter。
+后端提供了拦截器和注解方式的检测功能。
+前端可以根据检测返回的响应弹相应的弹窗基于提示。
+
 # 后端
 ## pom 坐标
 ```xml
@@ -21,12 +29,11 @@ sensitive-word:
 ```
 
 ## 安装 jar 包
-:::info
-没上传仓库，先手动安装一下吧
+> [!NOTE]
+>
+>没上传仓库，先手动安装一下吧
+>将`xxx`改成 jar 包存放目录。
 
-将`xxx`改成 jar 包存放目录。
-
-:::
 
 ```shell
 mvn install:install-file  -Dfile=xxx/jc-sensitive-word-boot-starter-1.0.0.jar  -DgroupId=com.nmgjc  -DartifactId=jc-sensitive-word-boot-starter  -Dversion=1.0.0  -Dpackaging=jar
