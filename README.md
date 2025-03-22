@@ -39,14 +39,14 @@ mvn install:install-file  -Dfile=xxx/jc-sensitive-word-boot-starter-1.0.0.jar  -
 ![](https://cdn.nlark.com/yuque/0/2025/png/32587996/1742269241577-6a6c5cdd-1f84-4aea-ab5b-35b91490c724.png)
 
 ## 响应体
-:::info
-`fileUpload：`是否文件上传的请求。如果是为 true，代表文件上传的请求。文件上传有专门的组件，文件上传想检测敏感词，就用那个组件。
+> [!NOTE]
+> 
+>`fileUpload：`是否文件上传的请求。如果是为 true，代表文件上传的请求。文件上传有专门的组件，文件上传想检测敏感词，就用那个组件。
+> 
+>`triggerType：`敏感词类型，1 为禁止性，2 为提示性。
+> 
+>`words：`监测到的敏感词列表，默认返回三个。
 
-`triggerType：`敏感词类型，1 为禁止性，2 为提示性。
-
-`words：`监测到的敏感词列表，默认返回三个。
-
-:::
 
 ```json
 {
@@ -63,17 +63,16 @@ mvn install:install-file  -Dfile=xxx/jc-sensitive-word-boot-starter-1.0.0.jar  -
 ```
 
 ## axios 响应拦截器
-:::info
-后端监测到敏感词后响应码是 602，只需把下面代码添加到 axios 的响应拦截器中即可。
+> [!NOTE]
+>
+>后端监测到敏感词后响应码是 602，只需把下面代码添加到 axios 的响应拦截器中即可。
+>并不是必须用下面这段代码，可以根据实项目情况完全可以自定义。
 
-并不是必须用下面这段代码，可以根据实项目情况完全可以自定义。
 
-:::
+>[!WARNING]
+>
+>但是提示性的敏感词，点击`继续`时 header 中必须传`X-Ignore-Sensitive-Check`，而且值是`true`。
 
-:::warning
-但是提示性的敏感词，点击`<font style="color:#DF2A3F;">继续</font>`时 header 中必须传`X-Ignore-Sensitive-Check`，而且值是`true`。
-
-:::
 
 ```javascript
 } else if(code === 602) {
@@ -118,10 +117,10 @@ mvn install:install-file  -Dfile=xxx/jc-sensitive-word-boot-starter-1.0.0.jar  -
 ![](https://cdn.nlark.com/yuque/0/2025/png/32587996/1742268520010-cef17e2b-47c5-415b-aeea-020c093e7f7d.png)
 
 ## 文件上传组件
-:::info
-根据项目实际情况自己调整。
+> [!NOTE]
+>
+>根据项目实际情况自己调整。
 
-:::
 
 ```vue
 <template>
@@ -424,34 +423,32 @@ defineExpose(({
 ```
 
 # 使用方式
-:::info
-提供了两种发式：
+> [!NOTE]
+>
+>提供了两种发式：
+>1. 基于拦截器
+>2. 基于切面
 
-1. 基于拦截器
-2. 基于切面
-
-:::
 
 ## 拦截器
-:::info
-默认项目启动会注册拦截器。
+> [!NOTE]
+>
+>默认项目启动会注册拦截器。
+>但是如果配置文件中的`sensitive-word.urlPatterns`未配置任何路径就不会注册拦截器。
 
-但是如果配置文件中的`sensitive-word.urlPatterns`未配置任何路径就不会注册拦截器。
-
-:::
 
 ## 切面
-:::info
-在 Controller 上添加注解`@SensitiveWord`即可。
+> [!NOTE]
+>
+>在 Controller 上添加注解`@SensitiveWord`即可。
 
-:::
 
 ## 三方调用接口
 ### 普通 JOSN 串
-:::info
-POST xxx/sensitiveWordCheck/sensitive
+> [!NOTE]
+>
+>POST xxx/sensitiveWordCheck/sensitive
 
-:::
 
 **Body 请求参数**
 
@@ -497,10 +494,10 @@ POST xxx/sensitiveWordCheck/sensitive
 
 
 ### 文件类型检测
-:::info
-POST xxx/sensitiveWordCheck/file
+> [!NOTE]
+>
+>POST xxx/sensitiveWordCheck/file
 
-:::
 
 ```java
 @PostMapping("/file")
