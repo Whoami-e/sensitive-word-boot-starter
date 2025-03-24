@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nmgjc.word.mapper.SwSensitiveWordDtlLogMapper">
+    
+    <resultMap type="com.nmgjc.word.domain.SwSensitiveWordDtlLog" id="SwSensitiveWordDtlLogResult">
+        <result property="id"    column="id"    />
+        <result property="busiYear"    column="busi_year"    />
+        <result property="wordLogId"    column="word_log_id"    />
+        <result property="wordId"    column="word_id"    />
+        <result property="triggerLocation"    column="trigger_location"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileExt"    column="file_ext"    />
+        <result property="fileContent"    column="file_content"    />
+        <result property="triggerCnt"    column="trigger_cnt"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSwSensitiveWordDtlLogVo">
+        select id, busi_year, word_log_id, word_id, trigger_location, file_name, file_ext, file_content, trigger_cnt, create_by, create_time from sw_sensitive_word_dtl_log
+    </sql>
+
+    <select id="selectSwSensitiveWordDtlLogList" parameterType="com.nmgjc.word.domain.SwSensitiveWordDtlLog" resultMap="SwSensitiveWordDtlLogResult">
+        <include refid="selectSwSensitiveWordDtlLogVo"/>
+        <where>  
+            <if test="busiYear != null "> and busi_year = #{busiYear}</if>
+            <if test="wordLogId != null "> and word_log_id = #{wordLogId}</if>
+            <if test="wordId != null "> and word_id = #{wordId}</if>
+            <if test="triggerLocation != null "> and trigger_location = #{triggerLocation}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileExt != null  and fileExt != ''"> and file_ext = #{fileExt}</if>
+            <if test="fileContent != null  and fileContent != ''"> and file_content = #{fileContent}</if>
+            <if test="triggerCnt != null "> and trigger_cnt = #{triggerCnt}</if>
+        </where>
+    </select>
+    
+    <select id="selectSwSensitiveWordDtlLogById" parameterType="Long" resultMap="SwSensitiveWordDtlLogResult">
+        <include refid="selectSwSensitiveWordDtlLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSwSensitiveWordDtlLog" parameterType="com.nmgjc.word.domain.SwSensitiveWordDtlLog" useGeneratedKeys="true" keyProperty="id">
+        insert into sw_sensitive_word_dtl_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="busiYear != null">busi_year,</if>
+            <if test="wordLogId != null">word_log_id,</if>
+            <if test="wordId != null">word_id,</if>
+            <if test="triggerLocation != null">trigger_location,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileExt != null">file_ext,</if>
+            <if test="fileContent != null">file_content,</if>
+            <if test="triggerCnt != null">trigger_cnt,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="busiYear != null">#{busiYear},</if>
+            <if test="wordLogId != null">#{wordLogId},</if>
+            <if test="wordId != null">#{wordId},</if>
+            <if test="triggerLocation != null">#{triggerLocation},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileExt != null">#{fileExt},</if>
+            <if test="fileContent != null">#{fileContent},</if>
+            <if test="triggerCnt != null">#{triggerCnt},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSwSensitiveWordDtlLog" parameterType="com.nmgjc.word.domain.SwSensitiveWordDtlLog">
+        update sw_sensitive_word_dtl_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="busiYear != null">busi_year = #{busiYear},</if>
+            <if test="wordLogId != null">word_log_id = #{wordLogId},</if>
+            <if test="wordId != null">word_id = #{wordId},</if>
+            <if test="triggerLocation != null">trigger_location = #{triggerLocation},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileExt != null">file_ext = #{fileExt},</if>
+            <if test="fileContent != null">file_content = #{fileContent},</if>
+            <if test="triggerCnt != null">trigger_cnt = #{triggerCnt},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSwSensitiveWordDtlLogById" parameterType="Long">
+        delete from sw_sensitive_word_dtl_log where id = #{id}
+    </delete>
+
+    <delete id="deleteSwSensitiveWordDtlLogByIds" parameterType="String">
+        delete from sw_sensitive_word_dtl_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

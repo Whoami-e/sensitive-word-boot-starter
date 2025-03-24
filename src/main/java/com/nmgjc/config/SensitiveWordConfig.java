@@ -14,6 +14,7 @@ import com.nmgjc.word.service.ISwSensitiveWordLogService;
 import com.nmgjc.word.service.ISwSensitveWordService;
 import com.nmgjc.word.service.impl.SwSensitiveWordLogServiceImpl;
 import com.nmgjc.word.service.impl.SwSensitveWordServiceImpl;
+import com.nmgjc.word.utils.Threads;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -91,7 +92,7 @@ public class SensitiveWordConfig{
                                     return Collections.emptySet();
                                 }
 
-                                return swSensitveWords.stream().map(item -> item.getTriggerType().toString()).collect(Collectors.toSet());
+                                return swSensitveWords.stream().map(item -> item.getTriggerType().toString() + "|" + item.getId().toString()).collect(Collectors.toSet());
                             }
                         })
                         .ignoreNumStyle(false)
@@ -112,6 +113,7 @@ public class SensitiveWordConfig{
             @Override
             protected void afterExecute(Runnable r, Throwable t){
                 super.afterExecute(r, t);
+                Threads.printException(r, t);
             }
         };
     }

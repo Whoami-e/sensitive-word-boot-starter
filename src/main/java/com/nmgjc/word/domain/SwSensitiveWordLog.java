@@ -1,23 +1,26 @@
 package com.nmgjc.word.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 敏感词日志对象 sw_sensitive_word_log
  * 
- * @author enrl
- * @date 2025-03-06
+ * @author geek
+ * @date 2025-03-24
  */
 public class SwSensitiveWordLog {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
     private Long id;
+
+    /** 年度 */
+    private Long busiYear;
 
     /** 请求方式;POST，GET等，ALL表示所有 */
     private String reqMethod;
@@ -34,7 +37,7 @@ public class SwSensitiveWordLog {
     /** 请求报文 */
     private String reqBody;
 
-    /** 触发类型;1-禁止性；2-提示信 */
+    /** 触发类型 1-禁止性；2-提示性 */
     private Long triggerType;
 
     /** 登录IP地址 */
@@ -66,39 +69,9 @@ public class SwSensitiveWordLog {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public String getCreateBy() {
-        return createBy;
-    }
+    private List<SwSensitiveWordDtlLog> dtlLogs;
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public void setId(Long id)
+    public void setId(Long id) 
     {
         this.id = id;
     }
@@ -106,6 +79,15 @@ public class SwSensitiveWordLog {
     public Long getId() 
     {
         return id;
+    }
+    public void setBusiYear(Long busiYear) 
+    {
+        this.busiYear = busiYear;
+    }
+
+    public Long getBusiYear() 
+    {
+        return busiYear;
     }
     public void setReqMethod(String reqMethod) 
     {
@@ -207,10 +189,51 @@ public class SwSensitiveWordLog {
         return os;
     }
 
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public List<SwSensitiveWordDtlLog> getDtlLogs() {
+        return dtlLogs;
+    }
+
+    public void setDtlLogs(List<SwSensitiveWordDtlLog> dtlLogs) {
+        this.dtlLogs = dtlLogs;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
+            .append("busiYear", getBusiYear())
             .append("reqMethod", getReqMethod())
             .append("reqUrl", getReqUrl())
             .append("reqName", getReqName())

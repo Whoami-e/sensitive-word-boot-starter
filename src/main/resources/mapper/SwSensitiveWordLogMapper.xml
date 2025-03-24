@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="com.nmgjc.word.domain.SwSensitiveWordLog" id="SwSensitiveWordLogResult">
         <result property="id"    column="id"    />
+        <result property="busiYear"    column="busi_year"    />
         <result property="reqMethod"    column="req_method"    />
         <result property="reqUrl"    column="req_url"    />
         <result property="reqName"    column="req_name"    />
@@ -24,12 +25,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectSwSensitiveWordLogVo">
-        select id, req_method, req_url, req_name, check_conf, req_body, trigger_type, ipaddr, msg, login_location, browser, os, create_by, create_time, update_by, update_time from sw_sensitive_word_log
+        select id, busi_year, req_method, req_url, req_name, check_conf, req_body, trigger_type, ipaddr, msg, login_location, browser, os, create_by, create_time, update_by, update_time from sw_sensitive_word_log
     </sql>
 
     <select id="selectSwSensitiveWordLogList" parameterType="com.nmgjc.word.domain.SwSensitiveWordLog" resultMap="SwSensitiveWordLogResult">
         <include refid="selectSwSensitiveWordLogVo"/>
         <where>  
+            <if test="busiYear != null "> and busi_year = #{busiYear}</if>
             <if test="reqMethod != null  and reqMethod != ''"> and req_method = #{reqMethod}</if>
             <if test="reqUrl != null  and reqUrl != ''"> and req_url = #{reqUrl}</if>
             <if test="reqName != null  and reqName != ''"> and req_name like concat('%', #{reqName}, '%')</if>
@@ -52,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertSwSensitiveWordLog" parameterType="com.nmgjc.word.domain.SwSensitiveWordLog" useGeneratedKeys="true" keyProperty="id">
         insert into sw_sensitive_word_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="busiYear != null">busi_year,</if>
             <if test="reqMethod != null and reqMethod != ''">req_method,</if>
             <if test="reqUrl != null and reqUrl != ''">req_url,</if>
             <if test="reqName != null and reqName != ''">req_name,</if>
@@ -69,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="busiYear != null">#{busiYear},</if>
             <if test="reqMethod != null and reqMethod != ''">#{reqMethod},</if>
             <if test="reqUrl != null and reqUrl != ''">#{reqUrl},</if>
             <if test="reqName != null and reqName != ''">#{reqName},</if>
@@ -90,6 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSwSensitiveWordLog" parameterType="com.nmgjc.word.domain.SwSensitiveWordLog">
         update sw_sensitive_word_log
         <trim prefix="SET" suffixOverrides=",">
+            <if test="busiYear != null">busi_year = #{busiYear},</if>
             <if test="reqMethod != null and reqMethod != ''">req_method = #{reqMethod},</if>
             <if test="reqUrl != null and reqUrl != ''">req_url = #{reqUrl},</if>
             <if test="reqName != null and reqName != ''">req_name = #{reqName},</if>

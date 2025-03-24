@@ -21,11 +21,11 @@
 # 敏感词过滤
 sensitive-word:
   # TrWebOCR的api路径
-  ocrUrl: http://localhost:8089/api/tr-run/
+  ocrUrl: http://xxxx:8089/api/tr-run/
   # 敏感词校验路径
   urlPatterns:
-    - /xxx/xxxx
-    - /xxxx/**
+    - /xxxx/xxxx/**|路径说明
+    - /xxx/xxx|路径说明
 ```
 
 ## 安装 jar 包
@@ -447,7 +447,7 @@ defineExpose(({
 ## 切面
 > [!NOTE]
 >
->在 Controller 上添加注解`@SensitiveWord`即可。
+>在 Controller 上添加注解`@SensitiveWord(name = "接口的说明")`即可。
 
 
 ## 三方调用接口

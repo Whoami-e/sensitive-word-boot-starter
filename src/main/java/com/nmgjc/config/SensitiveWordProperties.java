@@ -3,6 +3,7 @@ package com.nmgjc.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ Author：enrl

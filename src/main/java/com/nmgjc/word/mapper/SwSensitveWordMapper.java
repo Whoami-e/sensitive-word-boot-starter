@@ -37,7 +37,7 @@ public interface SwSensitveWordMapper
     @Select("SELECT word_name as wordName FROM sw_sensitve_word where status = 0 and del_flag = 1")
     public List<SwSensitveWord> selectSwSensitveWordAll();
 
-    @Select("SELECT trigger_type as triggerType FROM sw_sensitve_word where status = 0 and del_flag = 1 and word_name = #{word}")
+    @Select("SELECT trigger_type as triggerType, id FROM sw_sensitve_word where status = 0 and del_flag = 1 and word_name = #{word}")
     public List<SwSensitveWord> selectSwSensitveWordTags(String word);
 
     /**

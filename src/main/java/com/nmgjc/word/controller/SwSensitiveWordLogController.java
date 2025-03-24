@@ -50,7 +50,7 @@ public class SwSensitiveWordLogController extends BaseController
     @PostMapping
     public HttpResult add(@RequestBody SwSensitiveWordLog swSensitiveWordLog)
     {
-        return toAjax(swSensitiveWordLogService.insertSwSensitiveWordLog(swSensitiveWordLog));
+        return HttpResult.success(swSensitiveWordLogService.insertSwSensitiveWordLog(swSensitiveWordLog));
     }
 
     /**

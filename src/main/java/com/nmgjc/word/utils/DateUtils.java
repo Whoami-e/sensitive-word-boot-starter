@@ -74,5 +74,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         }
     }
 
+    public static Long getYear() {
+        return Long.valueOf(DateFormatUtils.format(new Date(), YYYY));
+    }
+
 
 }
