@@ -190,13 +190,13 @@ public class SensitiveWordAspect {
                     log.info("其中提示性敏感词：{}, 禁止性敏感词：{}", indicative, prohibitive);
 
                     if (CollectionUtils.isNotEmpty(prohibitive)) {
-                        recordLog(1L, request, sensitiveWord, requestBody, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", dtlLogs);
+                        CommonUtil.recordLog(1L, request, requestBody, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", dtlLogs, sensitiveWord.name());
                         CommonUtil.returnJson(response, HttpStatus.SENSITIVE_WORD, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", Result.prohibitive(prohibitive, isFileUpload));
                         return null;
                     }
 
                     if (CollectionUtils.isNotEmpty(indicative)) {
-                        recordLog(2L, request, sensitiveWord, requestBody, "您所提交的信息包含提示性敏感词，是否继续办理！", dtlLogs);
+                        CommonUtil.recordLog(2L, request, requestBody, "您所提交的信息包含提示性敏感词，是否继续办理！", dtlLogs, sensitiveWord.name());
                         CommonUtil.returnJson(response, HttpStatus.SENSITIVE_WORD, "您所提交的信息包含提示性敏感词，是否继续办理！", Result.indicative(indicative, isFileUpload));
                         return null;
                     }
@@ -208,27 +208,5 @@ public class SensitiveWordAspect {
             log.error("敏感词切面异常：{}", e.getMessage());
             return point.proceed();
         }
-    }
-
-
-    private void recordLog(Long type,
-                           HttpServletRequest request,
-                           SensitiveWord sensitiveWord,
-                           String requestBody,
-                           String msg,
-                           List<SwSensitiveWordDtlLog> dtlLogs) {
-        SwSensitiveWordLog swSensitiveWordLog = new SwSensitiveWordLog();
-        swSensitiveWordLog.setBusiYear(DateUtils.getYear());
-        swSensitiveWordLog.setReqMethod(request.getMethod());
-        swSensitiveWordLog.setReqUrl(request.getRequestURI());
-        swSensitiveWordLog.setReqName(sensitiveWord.name());
-        swSensitiveWordLog.setReqBody(requestBody);
-        swSensitiveWordLog.setTriggerType(type);
-        swSensitiveWordLog.setIpaddr(IpUtils.getIpAddr());
-        swSensitiveWordLog.setMsg(msg);
-        swSensitiveWordLog.setCreateTime(DateUtils.getNowDate());
-        swSensitiveWordLog.setDtlLogs(dtlLogs);
-
-        SwAsyncManager.me().execute(SwAsyncFactory.recordLog(swSensitiveWordLog));
     }
 }

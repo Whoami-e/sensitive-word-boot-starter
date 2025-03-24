@@ -24,8 +24,8 @@ sensitive-word:
   ocrUrl: http://xxxx:8089/api/tr-run/
   # 敏感词校验路径
   urlPatterns:
-    - /xxxx/xxxx/**|路径说明
-    - /xxx/xxx|路径说明
+    - url: /test/user/**
+      desc: 文件上传
 ```
 
 ## 安装 jar 包

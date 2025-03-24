@@ -16,7 +16,7 @@ public class SensitiveWordProperties {
 
     private String ocrUrl;
 
-    private List<String> urlPatterns;
+    private List<UrlConfigItem> urlPatterns;
 
     public String getOcrUrl() {
         return ocrUrl;
@@ -26,11 +26,32 @@ public class SensitiveWordProperties {
         this.ocrUrl = ocrUrl;
     }
 
-    public List<String> getUrlPatterns() {
+    public List<UrlConfigItem> getUrlPatterns() {
         return urlPatterns;
     }
 
-    public void setUrlPatterns(List<String> urlPatterns) {
+    public void setUrlPatterns(List<UrlConfigItem> urlPatterns) {
         this.urlPatterns = urlPatterns;
+    }
+
+    public static class UrlConfigItem {
+        private String url;
+        private String desc;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
     }
 }

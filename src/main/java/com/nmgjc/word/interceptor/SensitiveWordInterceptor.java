@@ -52,15 +52,10 @@ public class SensitiveWordInterceptor implements HandlerInterceptor {
     @Resource
     private SensitiveWordProperties properties;
 
-
     private static final Logger log = LoggerFactory.getLogger(SensitiveWordInterceptor.class);
-
-
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-
         try {
             String header = request.getHeader("X-Ignore-Sensitive-Check");
             log.info("是否二次拦截：{}", header);
@@ -208,13 +203,15 @@ public class SensitiveWordInterceptor implements HandlerInterceptor {
                         log.info("监测到的敏感词：{}，其中提示性敏感词：{}, 禁止性敏感词：{}", all, indicative, prohibitive);
 
                         if (CollectionUtils.isNotEmpty(prohibitive)) {
-                            recordLog(1L, request, requestBody, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", dtlLogs);
+                            // 记录日志
+                            CommonUtil.recordLog(1L, request, requestBody, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", dtlLogs, CommonUtil.findMatchedValue(properties.getUrlPatterns(), request.getRequestURI()));
                             CommonUtil.returnJson(response, HttpStatus.SENSITIVE_WORD, "您所提交的信息包含禁止性敏感词，请修改后重新发布！", Result.prohibitive(prohibitive, isFileUpload));
                             return false;
                         }
 
                         if (CollectionUtils.isNotEmpty(indicative)) {
-                            recordLog(2L, request, requestBody, "您所提交的信息包含提示性敏感词，是否继续办理！", dtlLogs);
+                            // 记录日志
+                            CommonUtil.recordLog(2L, request, requestBody, "您所提交的信息包含提示性敏感词，是否继续办理！", dtlLogs, CommonUtil.findMatchedValue(properties.getUrlPatterns(), request.getRequestURI()));
                             CommonUtil.returnJson(response, HttpStatus.SENSITIVE_WORD, "您所提交的信息包含提示性敏感词，是否继续办理！", Result.indicative(indicative, isFileUpload));
                             return false;
                         }
@@ -229,27 +226,4 @@ public class SensitiveWordInterceptor implements HandlerInterceptor {
             return true;
         }
     }
-
-
-    private void recordLog(Long type,
-                           HttpServletRequest request,
-                           String requestBody,
-                           String msg,
-                           List<SwSensitiveWordDtlLog> dtlLogs) {
-        SwSensitiveWordLog swSensitiveWordLog = new SwSensitiveWordLog();
-        swSensitiveWordLog.setBusiYear(DateUtils.getYear());
-        swSensitiveWordLog.setReqMethod(request.getMethod());
-        swSensitiveWordLog.setReqUrl(request.getRequestURI());
-        System.out.println(request.getRequestURI());
-        swSensitiveWordLog.setReqName(CommonUtil.findMatchedValue(properties.getUrlPatterns(), request.getRequestURI()));
-        swSensitiveWordLog.setReqBody(requestBody);
-        swSensitiveWordLog.setTriggerType(type);
-        swSensitiveWordLog.setIpaddr(IpUtils.getIpAddr());
-        swSensitiveWordLog.setMsg(msg);
-        swSensitiveWordLog.setCreateTime(DateUtils.getNowDate());
-        swSensitiveWordLog.setDtlLogs(dtlLogs);
-
-        SwAsyncManager.me().execute(SwAsyncFactory.recordLog(swSensitiveWordLog));
-    }
-
 }

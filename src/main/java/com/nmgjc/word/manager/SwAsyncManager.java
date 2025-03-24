@@ -1,6 +1,7 @@
 package com.nmgjc.word.manager;
 
 import com.nmgjc.word.utils.SpringUtil;
+import com.nmgjc.word.utils.Threads;
 
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,6 +33,10 @@ public class SwAsyncManager {
     public void execute(TimerTask task)
     {
         executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+    }
+
+    public void shutdown() {
+        Threads.shutdownAndAwaitTermination(executor);
     }
 
 }

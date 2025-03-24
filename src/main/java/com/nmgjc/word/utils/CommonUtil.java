@@ -1,13 +1,21 @@
 package com.nmgjc.word.utils;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.github.houbb.sensitive.word.core.SensitiveWord;
+import com.nmgjc.config.SensitiveWordProperties;
 import com.nmgjc.word.domain.HttpResult;
+import com.nmgjc.word.domain.SwSensitiveWordDtlLog;
+import com.nmgjc.word.domain.SwSensitiveWordLog;
 import com.nmgjc.word.holder.ContextPathHolder;
+import com.nmgjc.word.manager.SwAsyncManager;
+import com.nmgjc.word.manager.factory.SwAsyncFactory;
+import com.nmgjc.word.utils.ip.IpUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,32 +67,39 @@ public class CommonUtil {
         }
     }
 
-    public static String findMatchedValue(List<String> patternValueList, String targetPath) {
+    public static String findMatchedValue(List<SensitiveWordProperties.UrlConfigItem> patternValueList, String targetPath) {
 
         String processedPath = PathUtils.removeContextPath(
                 targetPath,
                 contextPathHolder.getContextPath()
         );
-        // 遍历List中的每个元素，拆分并匹配
+        // 遍历所有URL模式，找到第一个匹配项
         return patternValueList.stream()
-                .map(entry -> {
-                    String[] parts = entry.split("\\|"); // 转义竖线分割
-                    return parts.length >= 2 ? new String[]{parts[0], parts[1]} : null;
-                })
-                .filter(parts -> parts != null && pathMatcher.match(parts[0], processedPath))
-                .findFirst() // 取第一个匹配项（可优化为最长路径优先）
-                .map(parts -> parts[1])
+                .filter(pattern -> pathMatcher.match(pattern.getUrl(), processedPath))
+                .findFirst() // 默认取第一个匹配项，可优化为最长路径优先
+                .map(SensitiveWordProperties.UrlConfigItem::getDesc)
                 .orElse("/");
     }
 
-    public static void main(String[] args) {
-        List<String> patternValueList = new ArrayList<>();
-        patternValueList.add("/test/user/**|用户管理");
+    public static void recordLog(Long type,
+                           HttpServletRequest request,
+                           String requestBody,
+                           String msg,
+                           List<SwSensitiveWordDtlLog> dtlLogs,
+                           String reqName) {
+        SwSensitiveWordLog swSensitiveWordLog = new SwSensitiveWordLog();
+        swSensitiveWordLog.setBusiYear(DateUtils.getYear());
+        swSensitiveWordLog.setReqMethod(request.getMethod());
+        swSensitiveWordLog.setReqUrl(request.getRequestURI());
+        swSensitiveWordLog.setReqName(reqName);
+        swSensitiveWordLog.setReqBody(requestBody);
+        swSensitiveWordLog.setTriggerType(type);
+        swSensitiveWordLog.setIpaddr(IpUtils.getIpAddr());
+        swSensitiveWordLog.setMsg(msg);
+        swSensitiveWordLog.setCreateTime(DateUtils.getNowDate());
+        swSensitiveWordLog.setDtlLogs(dtlLogs);
 
-        String targetPath = "/test/user/upload";
-        String value = findMatchedValue(patternValueList, targetPath);
-
-        System.out.println(value); // 输出："文件上传"
+        SwAsyncManager.me().execute(SwAsyncFactory.recordLog(swSensitiveWordLog));
     }
 
 }

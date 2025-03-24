@@ -41,11 +41,11 @@ public class SensitiveWordInterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("敏感词拦截器 SensitiveWordConfig --> 开始注册敏感词拦截器");
-        List<String> urlPatterns = properties.getUrlPatterns();
+        List<SensitiveWordProperties.UrlConfigItem> urlPatterns = properties.getUrlPatterns();
         if(CollectionUtils.isEmpty(urlPatterns)) {
             log.error("敏感词拦截器 SensitiveWordConfig --> 拦截路径为空 --> 请检查配置文件 sensitive-word.urlPatterns 是否正确");
         } else{
-            List<String> collect = urlPatterns.stream().map(item -> item.split("\\|")[0]).collect(Collectors.toList());
+            List<String> collect = urlPatterns.stream().map(SensitiveWordProperties.UrlConfigItem::getUrl).collect(Collectors.toList());
             log.info("敏感词拦截器 SensitiveWordConfig --> 拦截路径：{}", collect);
             registry
                     .addInterceptor(sensitiveWordInterceptor)
