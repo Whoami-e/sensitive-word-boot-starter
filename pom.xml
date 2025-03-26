@@ -119,4 +119,20 @@
 
     </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <!--filtering标签默认是false,表示include标签中的文件不需要预编译并打入包中；true表示需要被预编译打包-->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
 </project>

@@ -75,7 +75,9 @@ public class SensitiveWordConfig{
                         .wordDeny(new IWordDeny() {
                             @Override
                             public List<String> deny() {
-                                List<SwSensitveWord> swSensitveWords = swSensitveWordService.selectSwSensitveWordList();
+                                SwSensitveWord swSensitveWord = new SwSensitveWord();
+                                swSensitveWord.setStatus(0L);
+                                List<SwSensitveWord> swSensitveWords = swSensitveWordService.selectSwSensitveWordList(swSensitveWord);
                                 log.info("共有 {} 条敏感词", swSensitveWords.size());
 
                                 return swSensitveWords.stream().map(SwSensitveWord::getWordName).collect(Collectors.toList());
@@ -87,7 +89,10 @@ public class SensitiveWordConfig{
                                 if(StringUtil.isEmpty(word)) {
                                     return Collections.emptySet();
                                 }
-                                List<SwSensitveWord> swSensitveWords = swSensitveWordService.selectSwSensitveWordTags(word);
+                                SwSensitveWord swSensitveWord = new SwSensitveWord();
+                                swSensitveWord.setStatus(0L);
+                                swSensitveWord.setWordName(word);
+                                List<SwSensitveWord> swSensitveWords = swSensitveWordService.selectSwSensitveWordList(swSensitveWord);
                                 if(CollectionUtil.isEmpty(swSensitveWords)) {
                                     return Collections.emptySet();
                                 }
@@ -126,6 +131,7 @@ public class SensitiveWordConfig{
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RestTemplate restTemplate(RestTemplateBuilder builder){
         return builder.setConnectTimeout(Duration.ofMillis(3000)).setReadTimeout(Duration.ofMillis(50000)).build();
     }

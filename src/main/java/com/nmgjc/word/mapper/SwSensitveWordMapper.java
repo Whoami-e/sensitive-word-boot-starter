@@ -34,11 +34,6 @@ public interface SwSensitveWordMapper
      */
     public List<SwSensitveWord> selectSwSensitveWordList(SwSensitveWord swSensitveWord);
 
-    @Select("SELECT word_name as wordName FROM sw_sensitve_word where status = 0 and del_flag = 1")
-    public List<SwSensitveWord> selectSwSensitveWordAll();
-
-    @Select("SELECT trigger_type as triggerType, id FROM sw_sensitve_word where status = 0 and del_flag = 1 and word_name = #{word}")
-    public List<SwSensitveWord> selectSwSensitveWordTags(String word);
 
     /**
      * 新增敏感词信息

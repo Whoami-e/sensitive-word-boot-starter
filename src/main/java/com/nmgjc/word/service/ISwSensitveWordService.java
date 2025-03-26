@@ -29,9 +29,7 @@ public interface ISwSensitveWordService
      * @return 敏感词信息集合
      */
     public List<SwSensitveWord> selectSwSensitveWordList(SwSensitveWord swSensitveWord);
-    public List<SwSensitveWord> selectSwSensitveWordList();
 
-    public List<SwSensitveWord> selectSwSensitveWordTags(String word);
 
     /**
      * 新增敏感词信息

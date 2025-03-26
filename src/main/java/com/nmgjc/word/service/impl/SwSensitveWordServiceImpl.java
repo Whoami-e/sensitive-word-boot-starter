@@ -52,17 +52,6 @@ public class SwSensitveWordServiceImpl implements ISwSensitveWordService {
         return swSensitveWordMapper.selectSwSensitveWordList(swSensitveWord);
     }
 
-    @Override
-    public List<SwSensitveWord> selectSwSensitveWordList()
-    {
-        return swSensitveWordMapper.selectSwSensitveWordAll();
-    }
-
-    @Override
-    public List<SwSensitveWord> selectSwSensitveWordTags(String word)
-    {
-        return swSensitveWordMapper.selectSwSensitveWordTags(word);
-    }
 
     /**
      * 新增敏感词信息
