@@ -206,7 +206,7 @@ public class SensitiveWordAspect {
             return point.proceed();
         } catch (Throwable e) {
             log.error("敏感词切面异常：{}", e.getMessage());
-            return point.proceed();
+            return null;
         }
     }
 }
