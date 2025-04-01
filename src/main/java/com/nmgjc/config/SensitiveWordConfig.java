@@ -8,14 +8,9 @@ import com.github.houbb.sensitive.word.api.IWordTag;
 import com.nmgjc.word.domain.SwSensitveWord;
 import com.nmgjc.word.interceptor.SensitiveWordInterceptor;
 import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
-import com.nmgjc.word.mapper.SwSensitiveWordLogMapper;
 import com.nmgjc.word.mapper.SwSensitveWordMapper;
-import com.nmgjc.word.service.ISwSensitiveWordLogService;
 import com.nmgjc.word.service.ISwSensitveWordService;
-import com.nmgjc.word.service.impl.SwSensitiveWordLogServiceImpl;
 import com.nmgjc.word.service.impl.SwSensitveWordServiceImpl;
-import com.nmgjc.word.utils.Threads;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,13 +55,6 @@ public class SensitiveWordConfig{
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public ISwSensitiveWordLogService swSensitiveWordLogService(SwSensitiveWordLogMapper swSensitiveWordLogMapper){
-        log.info("敏感词拦截器 swSensitiveWordLogService 开始初始化");
-        return new SwSensitiveWordLogServiceImpl(swSensitiveWordLogMapper);
-    }
-
-    @Bean
     @ConditionalOnBean(ISwSensitveWordService.class)
     public SensitiveWordBs sensitiveWordBs(ISwSensitveWordService swSensitveWordService) {
         log.info("敏感词拦截器 SensitiveWordConfig 开始初始化敏感词引导类");
@@ -97,7 +85,7 @@ public class SensitiveWordConfig{
                                     return Collections.emptySet();
                                 }
 
-                                return swSensitveWords.stream().map(item -> item.getTriggerType().toString() + "|" + item.getId().toString()).collect(Collectors.toSet());
+                                return swSensitveWords.stream().map(item -> item.getTriggerType().toString()).collect(Collectors.toSet());
                             }
                         })
                         .ignoreNumStyle(false)
@@ -107,21 +95,6 @@ public class SensitiveWordConfig{
         return sensitiveWordBs;
     }
 
-    /**
-     * 执行周期性或定时任务
-     */
-    @Bean(name = "swScheduledExecutorService")
-    protected ScheduledExecutorService scheduledExecutorService(){
-        return new ScheduledThreadPoolExecutor(50,
-                new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build(),
-                new ThreadPoolExecutor.CallerRunsPolicy()){
-            @Override
-            protected void afterExecute(Runnable r, Throwable t){
-                super.afterExecute(r, t);
-                Threads.printException(r, t);
-            }
-        };
-    }
 
     @Bean
     @DependsOn("sensitiveWordBs")

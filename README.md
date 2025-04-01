@@ -11,7 +11,7 @@
 ```xml
 <dependency>
     <groupId>com.nmgjc</groupId>
-    <artifactId>jc-sensitive-word-boot-starter</artifactId>
+    <artifactId>sensitive-word-boot-starter</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
@@ -36,7 +36,7 @@ sensitive-word:
 
 
 ```shell
-mvn install:install-file  -Dfile=xxx/jc-sensitive-word-boot-starter-1.0.0.jar  -DgroupId=com.nmgjc  -DartifactId=jc-sensitive-word-boot-starter  -Dversion=1.0.0  -Dpackaging=jar
+mvn install:install-file  -Dfile=xxx/sensitive-word-boot-starter-1.0.0.jar  -DgroupId=com.nmgjc  -DartifactId=sensitive-word-boot-starter  -Dversion=1.0.0  -Dpackaging=jar
 ```
 
 # 前端
@@ -448,70 +448,4 @@ defineExpose(({
 > [!NOTE]
 >
 >在 Controller 上添加注解`@SensitiveWord(name = "接口的说明")`即可。
-
-
-## 三方调用接口
-### 普通 JOSN 串
-> [!NOTE]
->
->POST xxx/sensitiveWordCheck/sensitive
-
-
-**Body 请求参数**
-
-```json
-{
-  "content": "bao炸"
-}
-```
-
-**返回示例**
-
-```json
-{
-  "msg": "操作成功",
-  "code": 200,
-  "data": [
-    {
-      "word": "bao炸",
-      "tags": [
-        "1"
-      ]
-    }
-  ]
-}
-```
-
-```json
-{
-  "msg": "错误信息",
-  "code": 500
-}
-```
-
-**返回数据结构**
-
-| 名称 | 类型 | 说明 |
-| --- | --- | --- |
-| » msg | string |  |
-| » code | integer |  |
-| » data | [object] |  |
-| »» word | string | 敏感词 |
-| »» tags | [string] | 敏感词类型：1为禁止性，2为提示性 |
-
-
-### 文件类型检测
-> [!NOTE]
->
->POST xxx/sensitiveWordCheck/file
-
-
-```java
-@PostMapping("/file")
-public HttpResult checkFile(@RequestParam("files") MultipartFile[] files){}
-```
-
-**返回示例**
-
-跟上面一样。
 

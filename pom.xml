@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nmgjc</groupId>
-    <artifactId>jc-sensitive-word-boot-starter</artifactId>
+    <artifactId>sensitive-word-boot-starter</artifactId>
     <version>1.0.0</version>
-    <name>jc-sensitive-word-boot-starter</name>
+    <name>sensitive-word-boot-starter</name>
     <description>jc-sensitive-word</description>
 
     <properties>
